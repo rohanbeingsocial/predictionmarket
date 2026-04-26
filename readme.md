@@ -57,7 +57,7 @@ Top wallets are fetched using the Polymarket leaderboard API:
 Output:
 
 ```
-polymarket_smart_money.xlsx
+polymarket_wallet.xlsx
 ```
 
 ---
@@ -79,7 +79,7 @@ For each trade, it logs:
 Output:
 
 ```
-polymarket_trades_log.xlsx
+polymarket_trades_log(1).xlsx
 ```
 
 ---
@@ -88,8 +88,8 @@ polymarket_trades_log.xlsx
 
 ```
 ├── data/
-│   ├── polymarket_smart_money.xlsx
-│   ├── polymarket_trades_log.xlsx
+│   ├── polymarket_wallet.xlsx
+│   ├── polymarket_trades_log(1).xlsx
 │
 ├── scripts/
 │   ├── wallet_collector.py
