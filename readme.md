@@ -1,83 +1,86 @@
 # Polymarket Smart Money Tracker
 
-A data-driven system to track, analyze, and interpret trades made by top-performing wallets on Polymarket — with the goal of identifying **high-quality trading signals**, not blindly copying trades.
+A data-driven system that tracks top-performing wallets on Polymarket, identifies consistent performers, and monitors their trades in near real-time to extract actionable insights.
 
 ---
 
-##  Overview
+## Overview
 
-Most users on Polymarket try to profit by:
+This project focuses on analyzing “smart money” behavior on Polymarket instead of blindly copying trades.
 
-* Betting on high-probability outcomes
-* Copying top wallets blindly
+It:
 
-Both approaches often fail due to:
-
-* Late entries
-* Mispriced probabilities
-* Lack of strategy context
-
-This project solves that by focusing on:
-
-> **Understanding smart money behavior instead of blindly following it**
+* Identifies top-performing wallets across categories
+* Filters for consistent performers
+* Tracks their trades continuously
+* Logs structured data for analysis
 
 ---
 
-## Key Idea
+## Data Source
 
-Top wallets don’t win because they pick obvious outcomes.
-They win because they:
+Top wallets are fetched using the Polymarket leaderboard API:
 
-* Enter early
-* Identify mispriced probabilities
-* Manage risk efficiently
+### Top 50 Wallets per Category
 
-This project extracts those signals.
+* Politics
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=POLITICS
 
----
+* Economics
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=ECONOMICS
 
-##  Features
+* Finance
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=FINANCE
 
-###  Wallet Tracking
+* Culture
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=CULTURE
 
-* Tracks top-performing wallets across markets
-* Logs all trades (price, size, time)
+* Tech
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=TECH
 
-### Real-Time Trade Detection
+* Sports
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=SPORTS
 
-* Detects large or unusual trades instantly
-* Identifies “high conviction” entries
-
-### Smart Filters
-
-* Filters trades based on:
-
-  * Price movement
-  * Trade size
-  * Market liquidity
-
-### Data Logging
-
-* Stores trade data in structured format (Excel/CSV)
-* Enables further analysis and modeling
-
-### Strategy Analysis
-
-* Helps answer:
-
-  * When do top traders enter?
-  * What markets do they prefer?
-  * Do they exit early or hold till resolution?
+* Crypto
+  https://data-api.polymarket.com/v1/leaderboard?timePeriod=MONTH&limit=50&orderBy=PNL&category=CRYPTO
 
 ---
 
-## Tech Stack
+## How It Works
 
-* **Python**
-* APIs (Polymarket / scraping)
-* **Pandas** (data processing)
-* **Excel/CSV logging**
-* (Optional) WebSockets for real-time tracking
+### 1. Wallet Collection Script
+
+* Fetches top 50 wallets per category
+* Stores results in an Excel file
+* Used to build a pool of high-performing traders
+
+Output:
+
+```
+polymarket_smart_money.xlsx
+```
+
+---
+
+### 2. Trade Tracking Script
+
+* Uses selected consistent performers
+* Polls for new trades every 60 seconds
+* Detects when a wallet enters a trade
+
+For each trade, it logs:
+
+* Wallet address
+* Market name
+* Timestamp
+* Entry price
+* Position (YES/NO)
+
+Output:
+
+```
+polymarket_trades_log.xlsx
+```
 
 ---
 
@@ -85,76 +88,50 @@ This project extracts those signals.
 
 ```
 ├── data/
-│   ├── polymarket_trades_log.xlsx
 │   ├── polymarket_smart_money.xlsx
+│   ├── polymarket_trades_log.xlsx
 │
 ├── scripts/
-│   ├── tracker.py
-│   ├── parser.py
-│   ├── filters.py
-│
-├── analysis/
-│   ├── insights.ipynb
+│   ├── wallet_collector.py
+│   ├── trade_tracker.py
 │
 └── README.md
 ```
 
 ---
 
-## How It Works
+## Key Insight
 
-1. Track selected top wallets
-2. Capture trades in real-time
-3. Apply filters to detect meaningful trades
-4. Store and analyze data
-5. Generate insights / signals
+This project does not aim to blindly copy trades.
+
+Instead, it focuses on identifying repeatable patterns in high-performing wallets and using them as signals.
 
 ---
 
-## Important Note
+## Limitations
 
-This is **NOT a copy trading bot**.
-
-Blindly copying trades can lead to:
-
-* Poor entry prices
-* Hidden risk exposure
-* Negative expected returns
-
-Instead, this system is designed to:
-
-> **Assist decision-making, not automate it blindly**
+* API polling (not true real-time WebSocket yet)
+* Trade execution is not automated
+* No guarantee of profitability (markets are efficient)
 
 ---
 
 ## Future Improvements
 
-* Real-time alert system (Telegram / Discord)
-* Automated trade execution (with safeguards)
-* ML-based trade quality scoring
-* Correlation analysis (oil, inflation, macro events)
-
----
-
-##  Inspiration
-
-The idea comes from the observation that:
-
-> Prediction markets are not just for speculation — they can be used to extract real signals from informed participants.
+* Real-time alerts (Telegram / Discord)
+* WebSocket-based tracking
+* Trade quality scoring system
+* Strategy clustering of wallets
 
 ---
 
 ## Disclaimer
 
-This project is for educational and research purposes only.
+This project is for research and educational purposes only.
 Not financial advice.
 
 ---
 
-## Contributing
+## If you like this project
 
-Feel free to fork, improve, or suggest features!
-
-
-
-Give it a star ⭐ — it helps a lot!
+Give it a star
